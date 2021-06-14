@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { requests } from "../API/requests";
 import { instance } from "../API/axios";
-import "../styles/Banner.css";
+import "../styles/HomeScreen.css";
 const Banner = () => {
   const [movie, setMovie] = useState({});
-  console.log(movie);
   useEffect(() => {
     (async () => {
       const result = await instance.get(requests.fetchNetflixOriginals);

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import "../styles/NavBar.css";
+import "../styles/HomeScreen.css";
 export default function NavBar() {
   const [show, handelShow] = useState(false);
   // Adding Scroll listner
-  console.log("hola");
   useEffect(() => {
     window.addEventListener("scroll", () => {
       if (window.scrollY > 100) {
-        console.log(window.scrollY);
         handelShow(true);
       } else {
         handelShow(false);

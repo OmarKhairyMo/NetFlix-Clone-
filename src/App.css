@@ -3,4 +3,9 @@
 }
 .App {
   background-color: #111;
+  overflow: hidden;
+}
+html {
+  margin: 0;
+  padding: 0;
 }

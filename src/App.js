@@ -1,25 +1,39 @@
+import React, { useEffect } from "react";
 import "./App.css";
-import { requests } from "./API/requests";
-import Row from "./components/Row";
-import Banner from "./components/Banner";
-import NavBar from "./components/NavBar";
-
+import { useDispatch, useSelector } from "react-redux";
+import { logout, login, selectUser } from "./feature/userSlice";
+import WelcomeScreen from ".//Screens/WelcomeScreen";
+import HomeScreen from "./Screens/HomeScreen";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { authentication } from "./firebase";
 function App() {
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const unsubscribe = authentication.onAuthStateChanged((user) => {
+      if (user) {
+        //logged in
+        dispatch(login({ uid: user.uid, email: user.email }));
+      } else {
+        // logged out
+        dispatch(logout);
+      }
+    });
+    return unsubscribe;
+  }, []);
   return (
     <div className="App">
-      <NavBar />
-      <Banner />
-      <Row
-        title="NetFlix-Originals"
-        fetch={requests.fetchNetflixOriginals}
-        isLarge
-      />
-      <Row title="Trending Now" fetch={requests.fetchTrending} />
-      <Row title="Top Rated" fetch={requests.fetchTopRated} />
-      <Row title="Action Movies" fetch={requests.fetchActionMovies} />
-      <Row title="Comedy Movies" fetch={requests.fetchComedyMovies} />
-      <Row title="Horror Movies" fetch={requests.fetchHorrorMovies} />
-      <Row title="Romatic Movies" fetch={requests.fetchRomanceMovies} />
+      <Router>
+        {!user ? (
+          <WelcomeScreen />
+        ) : (
+          <Switch>
+            <Route path="/">
+              <HomeScreen />
+            </Route>
+          </Switch>
+        )}
+      </Router>
     </div>
   );
 }
